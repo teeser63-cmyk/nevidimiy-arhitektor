@@ -1,0 +1,965 @@
+/* ===== ИСПРАВЛЕННЫЙ style.css ===== */
+/* ========== ОСНОВНЫЕ СТИЛИ ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #2c3e50;
+    --color-secondary: #8b5a2b;
+    --color-accent: #c0392b;
+    --color-text: #2c3e50;
+    --color-bg: #ecf0f1;
+    --color-panel: #f9f5f0;
+    --color-border: #8b5a2b;
+    --font-main: 'Cormorant Garamond', serif;
+    --font-ui: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background: #1a1a1a;
+    color: var(--color-text);
+    line-height: 1.6;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.game-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ========== ЭКРАН ЗАГРУЗКИ ========== */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+    max-width: 500px;
+    padding: 40px;
+}
+
+.loading-content h1 {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(139, 90, 43, 0.5);
+}
+
+.loading-content .subtitle {
+    font-size: 18px;
+    font-family: var(--font-ui);
+    opacity: 0.8;
+    margin-bottom: 40px;
+}
+
+.loading-bar {
+    width: 300px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.loading-progress {
+    width: 0%;
+    height: 100%;
+    background: var(--color-secondary);
+    transition: width 0.3s;
+}
+
+.loading-text {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* ========== ГЛАВНОЕ МЕНЮ ========== */
+.main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.menu-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/backgrounds/menu-bg.jpg') center/cover;
+    filter: blur(5px) brightness(0.5);
+    transform: scale(1.1);
+}
+
+.menu-content {
+    position: relative;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    text-align: center;
+}
+
+.menu-content h1 {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(0,0,0,0.8);
+    animation: fadeInDown 1s;
+}
+
+.menu-subtitle {
+    font-size: 18px;
+    font-family: var(--font-ui);
+    margin-bottom: 50px;
+    opacity: 0.9;
+    animation: fadeInUp 1s 0.2s both;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    animation: fadeInUp 1s 0.4s both;
+}
+
+.menu-btn {
+    padding: 15px 30px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.menu-btn:hover {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.menu-credits {
+    position: absolute;
+    bottom: 20px;
+    font-size: 12px;
+    font-family: var(--font-ui);
+    opacity: 0.6;
+}
+
+/* ========== ИГРОВОЙ ИНТЕРФЕЙС ========== */
+.game-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+}
+
+/* Верхняя панель статистики */
+.stats-bar {
+    background: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    border-bottom: 3px solid var(--color-secondary);
+    z-index: 100;
+}
+
+.stat-group {
+    display: flex;
+    gap: 20px;
+}
+
+.stat {
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    cursor: help;
+}
+
+.stat span {
+    font-weight: bold;
+    color: var(--color-secondary);
+    margin-left: 5px;
+}
+
+/* Основная игровая область */
+.game-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Левая часть - визуальная новелла */
+.visual-novel-area {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.scene-container {
+    flex: 1;
+    position: relative;
+    background: #000;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 1s;
+}
+
+.characters-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.character {
+    position: absolute;
+    bottom: 0;
+    height: 90%;
+    max-height: 600px;
+    transition: all 0.5s;
+}
+
+.character.left {
+    left: 5%;
+}
+
+.character.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.character.right {
+    right: 5%;
+}
+
+.character.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Эффекты */
+.effect-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.effect-rain {
+    background: linear-gradient(transparent 0%, rgba(0,0,0,0.3) 100%);
+    animation: rain 0.5s infinite;
+}
+
+.effect-fog {
+    background: rgba(255,255,255,0.3);
+    animation: fog 10s infinite alternate;
+}
+
+.effect-cholera {
+    background: rgba(139, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+}
+
+/* Исследовательские поп-апы */
+.research-popup {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    background: rgba(249, 245, 240, 0.95);
+    border-left: 4px solid var(--color-secondary);
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 500;
+    animation: slideInRight 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.research-popup-content {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.research-icon {
+    font-size: 24px;
+}
+
+.research-popup button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+/* Текстовая панель */
+.text-panel {
+    background: var(--color-panel);
+    border-top: 3px solid var(--color-border);
+    padding: 20px;
+    min-height: 400px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.speaker-name {
+    font-weight: bold;
+    color: var(--color-secondary);
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.scene-text {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.8;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 15px;
+}
+
+/* Кнопки выбора */
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.choice-btn {
+    padding: 12px 20px;
+    background: white;
+    border: 2px solid var(--color-border);
+    border-radius: 5px;
+    font-family: var(--font-main);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    position: relative;
+}
+
+.choice-btn:hover:not(.disabled) {
+    background: var(--color-border);
+    color: white;
+    transform: translateX(5px);
+}
+
+.choice-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.choice-tooltip {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #999;
+}
+
+/* Кнопки интерфейса */
+.interface-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.interface-btn {
+    padding: 8px 15px;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: var(--color-text);
+}
+
+.interface-btn:hover {
+    background: var(--color-border);
+    color: white;
+}
+
+/* Правая боковая панель */
+.sidebar {
+    width: 250px;
+    background: white;
+    border-left: 2px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-ui);
+    font-size: 14px;
+}
+
+.sidebar-tab {
+    padding: 15px;
+    text-align: center;
+    background: #f0f0f0;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: all 0.3s;
+}
+
+.sidebar-tab.active {
+    background: var(--color-secondary);
+    color: white;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: none;
+}
+
+.sidebar-content.active {
+    display: block;
+}
+
+/* Инвентарь */
+.inventory-item {
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inventory-icon {
+    font-size: 24px;
+}
+
+.inventory-name {
+    font-weight: bold;
+}
+
+.inventory-desc {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Дневник */
+.diary-note {
+    background: #fff9e6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-left: 3px solid var(--color-secondary);
+    font-style: italic;
+}
+
+.diary-date {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+/* Энциклопедия */
+.research-articles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.research-article {
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.research-article:hover {
+    background: var(--color-secondary);
+    color: white;
+}
+
+/* ========== МОДАЛЬНЫЕ ОКНА ========== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1500;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: white;
+    width: 60%;
+    max-width: 800px;
+    max-height: 80vh;
+    border-radius: 10px;
+    overflow: hidden;
+    animation: slideInUp 0.3s;
+}
+
+.modal-content.large {
+    width: 80%;
+    max-width: 1000px;
+}
+
+.modal-header {
+    padding: 20px;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-family: var(--font-main);
+    font-size: 24px;
+}
+
+.close {
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.close:hover {
+    color: var(--color-secondary);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 80px);
+}
+
+/* Концовка */
+.ending-modal .modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
+    color: white;
+    text-align: center;
+}
+
+.ending-title {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: var(--color-secondary);
+}
+
+.ending-text {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.ending-stats {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.ending-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.ending-buttons button {
+    padding: 12px 30px;
+    background: var(--color-secondary);
+    border: none;
+    color: white;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ending-buttons button:hover {
+    background: var(--color-accent);
+    transform: scale(1.05);
+}
+
+/* ========== АНИМАЦИИ ========== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.2; }
+}
+
+@keyframes rain {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 20px; }
+}
+
+@keyframes fog {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
+/* Стили для курсора печатной машинки */
+.scene-text.typing::after {
+    content: '|';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+    color: var(--color-secondary);
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* ========== АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ ========== */
+@media (max-width: 1024px) {
+    .game-main {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .stat-group {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .character {
+        height: 70%;
+    }
+    
+    .menu-content h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-bar {
+        font-size: 12px;
+        padding: 8px;
+    }
+    
+    .stat-group {
+        justify-content: center;
+    }
+    
+    .interface-buttons {
+        gap: 5px;
+    }
+    
+    .interface-btn {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    
+    .text-panel {
+        padding: 10px;
+        min-height: 350px;
+    }
+    
+    .choice-btn {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    .choice-tooltip {
+        font-size: 10px;
+    }
+}
+/* Стили для энциклопедии */
+.encyclopedia-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.encyclopedia-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 10px;
+}
+
+.encyclopedia-nav-btn {
+    padding: 8px 15px;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 30px;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: var(--color-text);
+}
+
+.encyclopedia-nav-btn:hover {
+    background: var(--color-secondary);
+    color: white;
+    border-color: var(--color-secondary);
+}
+
+.encyclopedia-nav-btn.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.encyclopedia-section {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.encyclopedia-section.active {
+    display: flex;
+}
+
+.encyclopedia-section h3 {
+    font-family: var(--font-main);
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--color-secondary);
+}
+
+.encyclopedia-card,
+.encyclopedia-city-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.encyclopedia-card:hover,
+.encyclopedia-city-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.encyclopedia-card-header {
+    padding: 12px 15px;
+    background: linear-gradient(to right, rgba(139, 90, 43, 0.05), transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.encyclopedia-card-header .card-title {
+    font-family: var(--font-main);
+    font-size: 18px;
+}
+
+.encyclopedia-card-header .card-toggle {
+    font-size: 12px;
+    color: var(--color-secondary);
+    transition: transform 0.3s;
+}
+
+.encyclopedia-card.active .card-toggle {
+    transform: rotate(180deg);
+}
+
+.encyclopedia-card-content {
+    max-height: 0;
+    padding: 0 15px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.2s ease;
+    background: #faf8f5;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.encyclopedia-card.active .encyclopedia-card-content {
+    max-height: 500px;
+    padding: 15px;
+}
+
+.encyclopedia-card-content p {
+    margin-bottom: 8px;
+}
+
+.encyclopedia-card-content p:last-child {
+    margin-bottom: 0;
+}
+
+.encyclopedia-card-content em {
+    color: var(--color-secondary);
+    font-size: 13px;
+}
+
+/* Стили для сравнительной таблицы */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-ui);
+    font-size: 13px;
+}
+
+.comparison-table th {
+    background: var(--color-primary);
+    color: white;
+    padding: 10px 5px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.comparison-table td {
+    border: 1px solid var(--color-border);
+    padding: 8px 5px;
+    vertical-align: top;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: rgba(139, 90, 43, 0.05);
+}
+
+.comparison-table td:first-child {
+    font-weight: 600;
+    background: rgba(139, 90, 43, 0.1);
+    width: 120px;
+}
+
+/* Убедитесь, что стили для карточек энциклопедии работают */
+.encyclopedia-card-content ul {
+    margin: 8px 0 8px 20px;
+    padding-left: 0;
+}
+
+.encyclopedia-card-content li {
+    margin-bottom: 3px;
+}

@@ -1,0 +1,15 @@
+<svg width="300" height="600" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="150" cy="550" rx="80" ry="20" fill="rgba(0,0,0,0.2)"/>
+    <!-- Тело в сюртуке -->
+    <rect x="120" y="200" width="60" height="250" fill="#34495e" rx="8"/>
+    <!-- Голова -->
+    <circle cx="150" cy="150" r="40" fill="#34495e"/>
+    <!-- Шляпа-цилиндр -->
+    <rect x="135" y="90" width="30" height="30" fill="#2c3e50"/>
+    <rect x="125" y="80" width="50" height="15" fill="#2c3e50"/>
+    <!-- Очки (символ учёного) -->
+    <circle cx="140" cy="145" r="8" fill="none" stroke="#e67e22" stroke-width="3"/>
+    <circle cx="160" cy="145" r="8" fill="none" stroke="#e67e22" stroke-width="3"/>
+    <!-- Книга в руке -->
+    <rect x="190" y="300" width="30" height="40" fill="#8b5a2b" rx="3"/>
+</svg>

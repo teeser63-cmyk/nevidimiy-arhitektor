@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Невидимый архитектор · Исследовательская работа</title>
+    <meta name="description" content="Исследовательская работа о влиянии эпидемий холеры на градостроительную модернизацию Лондона, Парижа и Минска в XIX веке">
+    <meta name="keywords" content="холера, урбанизм, история, Лондон, Париж, Минск, Джон Сноу, Осман, Чапский">
+    <meta name="author" content="Тарасенко Карина Витальевна">
+    
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:title" content="Невидимый архитектор: как холера перестроила Лондон, Париж и Минск">
+    <meta property="og:description" content="Учебно-исследовательская работа учащейся 9 класса">
+    <meta property="og:type" content="article">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2c3e50;
+            --color-secondary: #8b5a2b;
+            --color-accent: #c0392b;
+            --color-text: #2c3e50;
+            --color-text-light: #5a6a7a;
+            --color-bg: #f5f2ed;
+            --color-panel: #ffffff;
+            --color-border: #e0d9d0;
+            --font-main: 'Cormorant Garamond', serif;
+            --font-ui: 'Montserrat', sans-serif;
+            --shadow-sm: 0 5px 15px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, #f5f2ed 0%, #e8e2d8 100%);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Пылинки/шум фона */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48ZyBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjAuMDYiPjxwYXRoIGQ9Ik0xMCAxMEwxMCAxMEwxMCAxMEwxMCAxMHpNMjAgMjBMMjAgMjBMMjAgMjBMMjAgMjB6TTMwIDMwTDMwIDMwTDMwIDMwTDMwIDMwek00MCA0MEw0MCA0MEw0MCA0MEw0MCA0MHpNNTAgNTBMNTAgNTBMNTAgNTBMNTAgNTB6TTYwIDYwTDYwIDYwTDYwIDYwTDYwIDYweiI+PC9wYXRoPjwvZz48L3N2Zz4=');
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Кнопка назад */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            font-family: var(--font-ui);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-button:hover {
+            background: var(--color-secondary);
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .back-button:active {
+            transform: translateX(-2px);
+        }
+
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Основной контент */
+        .research-paper {
+            background: var(--color-panel);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Шапка */
+        .paper-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1a2632 100%);
+            color: white;
+            padding: 60px 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .paper-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139,90,43,0.2) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .paper-header h1 {
+            font-family: var(--font-main);
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .paper-header h1::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--color-secondary);
+            margin-top: 20px;
+            border-radius: 2px;
+        }
+
+        .paper-subtitle {
+            font-family: var(--font-ui);
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .paper-author {
+            font-family: var(--font-ui);
+            font-size: 16px;
+            font-weight: 400;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .paper-author strong {
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
+        /* Оглавление */
+        .table-of-contents {
+            background: rgba(139, 90, 43, 0.05);
+            padding: 30px 60px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .table-of-contents h3 {
+            font-family: var(--font-main);
+            font-size: 24px;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .toc-item {
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--color-text);
+            font-family: var(--font-ui);
+            font-size: 14px;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .toc-item:hover {
+            background: var(--color-secondary);
+            color: white;
+            border-color: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Введение и ключевые тезисы */
+        .paper-intro {
+            padding: 50px 60px 30px;
+            border-bottom: 2px solid var(--color-border);
+            background: linear-gradient(to bottom, rgba(139,90,43,0.02), transparent);
+        }
+
+        .paper-intro h2, .chapter h2 {
+            font-family: var(--font-main);
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .paper-intro h2::before {
+            content: '“';
+            font-size: 60px;
+            color: var(--color-secondary);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .paper-intro p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--color-text);
+            margin-bottom: 30px;
+            font-style: italic;
+            padding-left: 40px;
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        .key-insight {
+            display: flex;
+            gap: 20px;
+            background: rgba(139,90,43,0.05);
+            padding: 25px 30px;
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+
+        .key-insight-icon {
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .key-insight-text {
+            flex: 1;
+        }
+
+        .key-insight-text h3 {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-secondary);
+            margin-bottom: 8px;
+        }
+
+        .key-insight-text p {
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+            border: none;
+            font-style: normal;
+        }
+
+        /* Главы */
+        .chapter {
+            padding: 40px 60px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .chapter h2 {
+            margin-bottom: 30px;
+        }
+
+        .chapter h2::before {
+            content: '📖';
+            font-size: 32px;
+            margin-right: 10px;
+            color: var(--color-secondary);
+        }
+
+        .chapter h3 {
+            font-family: var(--font-main);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-secondary);
+            margin: 25px 0 15px;
+        }
+
+        .chapter p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: var(--color-text);
+        }
+
+        .chapter sup {
+            color: var(--color-secondary);
+            font-weight: 600;
+            cursor: help;
+        }
+
+        .chapter sup:hover {
+            text-decoration: underline;
+        }
+
+        .chapter ul, .chapter ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .chapter li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Города (карточки) */
+        .cities-section {
+            padding: 40px 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .city-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--color-border);
+            position: relative;
+            top: 0;
+        }
+
+        .city-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .city-header {
+            padding: 25px 25px 15px;
+            border-bottom: 2px solid;
+            position: relative;
+        }
+
+        .city-header.london { border-color: #4a6b8f; }
+        .city-header.paris { border-color: #8b5a2b; }
+        .city-header.minsk { border-color: #4a6b5a; }
+
+        .city-name {
+            font-family: var(--font-main);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-year {
+            font-family: var(--font-ui);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-light);
+            letter-spacing: 1px;
+        }
+
+        .city-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
+            opacity: 0.2;
+        }
+
+        .city-content {
+            padding: 20px 25px 25px;
+        }
+
+        .city-quote {
+            font-style: italic;
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+            padding-left: 15px;
+            border-left: 2px solid var(--color-secondary);
+        }
+
+        .city-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-family: var(--font-ui);
+            font-size: 13px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--color-border);
+        }
+
+        .city-stat span:first-child {
+            font-weight: 500;
+            color: var(--color-text-light);
+        }
+
+        .city-stat span:last-child {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .city-features {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .city-features li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .city-features li::before {
+            content: '✓';
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        /* Цитата и вывод */
+        .conclusion-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2632 100%);
+            color: white;
+            padding: 50px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conclusion-section::before {
+            content: '〰️';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px);
+            pointer-events: none;
+        }
+
+        .conclusion-section h2 {
+            font-family: var(--font-main);
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .conclusion-section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: var(--color-secondary);
+            margin-top: 10px;
+        }
+
+        .conclusion-text {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 800px;
+            position: relative;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .conclusion-text p {
+            margin-bottom: 20px;
+        }
+
+        .conclusion-text strong {
+            color: var(--color-secondary);
+        }
+
+        /* Источники */
+        .sources-section {
+            padding: 40px 60px 50px;
+            background: #faf8f5;
+        }
+
+        .sources-section h3 {
+            font-family: var(--font-main);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sources-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px 30px;
+            list-style: none;
+        }
+
+        .sources-list li {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--color-text-light);
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .sources-list li:hover {
+            color: var(--color-secondary);
+            transform: translateX(5px);
+        }
+
+        .sources-list li::before {
+            content: '📚';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* Приложения */
+        .appendix {
+            padding: 40px 60px;
+            border-top: 2px solid var(--color-border);
+            background: #faf8f5;
+        }
+
+        .appendix h2 {
+            font-family: var(--font-main);
+            font-size: 28px;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+        }
+
+        .appendix h3 {
+            font-family: var(--font-main);
+            font-size: 20px;
+            color: var(--color-secondary);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .appendix-caption {
+            font-family: var(--font-ui);
+            font-size: 12px;
+            color: var(--color-text-light);
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* Схема для приложения 1 */
+        .schema {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .schema-item {
+            background: var(--color-primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            width: 100%;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .schema-arrow {
+            font-size: 24px;
+            color: var(--color-secondary);
+        }
+
+        /* Таблица для приложения 2 */
+        .research-comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-ui);
+            font-size: 13px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .research-comparison-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .research-comparison-table td {
+            border: 1px solid var(--color-border);
+            padding: 10px 8px;
+            vertical-align: top;
+        }
+
+        .research-comparison-table tr:nth-child(even) {
+            background: rgba(139, 90, 43, 0.05);
+        }
+
+        .research-comparison-table td:first-child {
+            font-weight: 600;
+            background: rgba(139, 90, 43, 0.1);
+            width: 180px;
+        }
+
+        .comparison-table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Футер */
+        .paper-footer {
+            background: var(--color-primary);
+            padding: 30px 60px;
+            text-align: center;
+            border-top: 2px solid var(--color-secondary);
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-ui);
+            font-size: 14px;
+        }
+
+        .paper-footer strong {
+            color: white;
+        }
+
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--color-secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background: var(--color-primary);
+            transform: translateY(-5px);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .cities-section {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 30px;
+            }
+            
+            .paper-header,
+            .paper-intro,
+            .chapter,
+            .conclusion-section,
+            .sources-section,
+            .appendix,
+            .paper-footer,
+            .table-of-contents {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cities-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .paper-header h1 {
+                font-size: 36px;
+            }
+            
+            .paper-intro p {
+                font-size: 16px;
+                padding-left: 20px;
+            }
+            
+            .sources-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .key-insight {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+            
+            .paper-header,
+            .paper-intro,
+            .chapter,
+            .cities-section,
+            .conclusion-section,
+            .sources-section,
+            .appendix,
+            .paper-footer,
+            .table-of-contents {
+                padding: 30px 20px;
+            }
+            
+            .research-comparison-table {
+                font-size: 11px;
+            }
+            
+            .research-comparison-table td:first-child {
+                width: 100px;
+            }
+            
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .city-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .city-card:nth-child(1) { animation-delay: 0.1s; }
+        .city-card:nth-child(2) { animation-delay: 0.2s; }
+        .city-card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Кнопка назад -->
+        <button class="back-button" onclick="goBack()">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Вернуться в игру
+        </button>
+
+        <div class="research-paper">
+            <!-- Шапка -->
+            <div class="paper-header">
+                <h1>Невидимый архитектор</h1>
+                <div class="paper-subtitle">Как холера перестроила Лондон, Париж и Минск</div>
+                <div class="paper-author">
+                    <strong>Тарасенко Карина Витальевна</strong> · учащаяся 9 «А» класса<br>
+                    Руководитель: Барейша Илья Александрович · ГУО «Средняя школа №5 г.Жлобина»
+                </div>
+            </div>
+
+            <!-- Оглавление -->
+            <div class="table-of-contents">
+                <h3>📋 Содержание</h3>
+                <div class="toc-grid">
+                    <a href="#intro" class="toc-item">Введение</a>
+                    <a href="#chapter1" class="toc-item">Глава 1. Холера и город XIX века</a>
+                    <a href="#chapter2" class="toc-item">Глава 2. Лондон: триумф инженерии</a>
+                    <a href="#chapter3" class="toc-item">Глава 3. Париж: санитарная необходимость</a>
+                    <a href="#chapter4" class="toc-item">Глава 4. Минск: губернская модернизация</a>
+                    <a href="#chapter5" class="toc-item">Глава 5. Сравнительный анализ</a>
+                    <a href="#sources" class="toc-item">Источники и литература</a>
+                    <a href="#appendix1" class="toc-item">Приложение 1</a>
+                    <a href="#appendix2" class="toc-item">Приложение 2</a>
+                </div>
+            </div>
+
+            <!-- Введение и гипотеза -->
+            <div class="paper-intro" id="intro">
+                <h2>Гипотеза исследования</h2>
+                <p>«Холера в XIX веке выступила в роли «невидимого архитектора», который не только привел к трагическим последствиям, но и вынудил власти перейти от точечных мер к системной модернизации — строительству канализации, расширению улиц, созданию систем водоснабжения, что заложило фундамент современного урбанизма» <sup>[1]</sup>.</p>
+                
+                <div class="key-insight">
+                    <div class="key-insight-icon">🦠</div>
+                    <div class="key-insight-text">
+                        <h3>Ключевая идея</h3>
+                        <p>Эпидемии холеры стали катализатором превращения гигиены из частного дела в публичную политику, а города — из пассивного поля битвы с эпидемиями в объект активного, превентивного проектирования <sup>[2]</sup>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Глава 1 -->
+            <div class="chapter" id="chapter1">
+                <h2>Глава 1. Холера и город XIX века</h2>
+                <p>XIX век стал веком триумфа и проклятия городской цивилизации. Промышленная революция, начавшаяся в Англии и стремительно распространившаяся по Европе, спровоцировала беспрецедентный демографический взрыв в городах. Однако этот рост был хаотичным и поспешным. Города, унаследовавшие средневековую планировку с тесными, извилистыми улочками, оказались совершенно не готовы принять сотни тысяч новых жителей. Урбанизация в первой половине столетия носила характер стихийной катастрофы, создав уникальную и смертоносную среду, которую современные исследователи справедливо называют «эпидемиологическим котлом» <sup>[3]</sup>.</p>
+                
+                <h3>Санитарный кризис</h3>
+                <p>Главной проблемой стал катастрофический разрыв между количеством людей и состоянием инфраструктуры. Водоснабжение в большинстве городов оставалось примитивным. Источниками служили общественные колодцы, реки и каналы, которые одновременно были и главными приемниками нечистот. В Лондоне вода из Темзы, загрязненная стоками со всего города, забиралась насосными станциями и продавалась жителям. В Париже лишь около 20% домов в 1850 году имели доступ к питьевой воде из акведуков <sup>[4]</sup>.</p>
+                
+                <h3>Научные теории</h3>
+                <p>Господствующей на протяжении столетий оставалась миазматическая теория. Ее сторонники считали причиной болезней, и холеры в частности, ядовитые испарения («миазмы»), возникающие при разложении органического вещества. Кульминацией научного противостояния стала работа английского врача Джона Сноу, который в 1854 году доказал водный путь передачи холеры <sup>[5]</sup>.</p>
+            </div>
+
+            <!-- Глава 2 -->
+            <div class="chapter" id="chapter2">
+                <h2>Глава 2. Лондон: триумф инженерии и гражданского общества</h2>
+                
+                <h3>«Великое зловоние» 1858 года</h3>
+                <p>Аномально жаркое и сухое лето 1858 года стало катализатором: уровень воды в Темзе упал, обнажив берега, покрытые гниющим илом. Запах был настолько силен, что пропитывал занавески в здании Парламента. Сессии были сорваны, а The Times писала: «Миазмы, поднимающиеся от реки, настолько губительны, что те, кто вынужден вдыхать их, едва способны переносить жизнь» <sup>[6]</sup>. Всего за 18 дней был принят закон, давший старт грандиозному проекту Джозефа Базалджета.</p>
+                
+                <h3>Джон Сноу и рождение эпидемиологии</h3>
+                <p>Во время эпидемии 1854 года в районе Сохо врач Джон Сноу применил принципиально новый метод исследования — пространственный (картографический) анализ данных. Он нанёс случаи смерти на карту и обнаружил кластеризацию вокруг водозаборной колонки на Брод-стрит. Отключение рукоятки насоса привело к резкому спаду заболеваемости <sup>[7]</sup>.</p>
+                
+                <h3>Система канализации Джозефа Базалджета</h3>
+                <p>Базалджет спроектировал иерархическую систему из 132 км главных кирпичных коллекторов, которые собирали стоки и отводили их далеко на восток. Он удвоил расчётную пропускную способность труб, что обеспечило работу системы на полтора столетия вперёд <sup>[8]</sup>.</p>
+            </div>
+
+        
+            <!-- Глава 3 -->
+            <div class="chapter" id="chapter3">
+                <h2>Глава 3. Париж: санитарная необходимость как инструмент имперской политики</h2>
+                
+                <h3>Старый Париж: лабиринт болезней и революций</h3>
+                <p>Главной характеристикой старого Парижа была его непроницаемость. Густая сеть узких, извилистых улочек (часто шириной менее 5 метров), тупиков и плотно застроенных кварталов делала город идеальным убежищем для преступности и рассадником болезней. Эпидемия холеры 1832 года, унесшая жизни 20 000 парижан, и революции 1830 и 1848 годов наглядно продемонстрировали связь санитарного и политического кризисов <sup>[9]</sup>.</p>
+                
+                <h3>Барон Осман: хирург города</h3>
+                <p>Префект департамента Сена Жорж-Эжен Осман реализовал проект тотальной градостроительной хирургии. Было снесено около 20 000 старых зданий, проложено 95 км новых широких бульваров, созданы парки, построены 600 км канализации и новый водопровод <sup>[10]</sup>. Осман открыто называл бульвары «артериями циркуляции воздуха и людей», но они также обеспечивали быстрое перемещение войск и делали невозможным строительство баррикад.</p>
+            </div>
+
+            <!-- Глава 4 -->
+            <div class="chapter" id="chapter4">
+                <h2>Глава 4. Минск: губернская модернизация между вызовом и ресурсами</h2>
+                
+                <h3>Природно-инфраструктурный кризис</h3>
+                <p>Ключевой особенностью Минска была сильная заболоченность территории в районе слияния рек Свислочь и Немига, а также обилие подземных вод. Высокий уровень грунтовых вод приводил к постоянному подтоплению и переполнению выгребных ям. Как отмечалось в отчете городского врача, «жидкие нечистоты, не имея выхода, просачиваются в почву и отравляют колодцы» <sup>[11]</sup>.</p>
+                
+                <h3>Первый водопровод (1874)</h3>
+                <p>Вода забиралась из реки Свислочь выше по течению города, фильтровалась через песчаные фильтры и подавалась самотеком по чугунным трубам к 16 водоразборным колонкам. Это было скромное по европейским меркам, но революционное для губернского города решение <sup>[12]</sup>.</p>
+                
+                <h3>Кароль Чапский</h3>
+                <p>Минский городской голова (1885-1901) продолжил преобразования: осушение болот, замощение улиц, электричество, телефон, первые элементы канализации. Его деятельность — пример того, как один человек может изменить город даже в условиях ограниченных ресурсов <sup>[13]</sup>.</p>
+            </div>
+
+            <!-- Глава 5 -->
+            <div class="chapter" id="chapter5">
+                <h2>Глава 5. Сравнительный анализ «холерного» урбанизма</h2>
+                
+                <p>Несмотря на разницу в масштабах, политическом устройстве и культурном контексте, сравнительный анализ путей Лондона, Парижа и Минска позволяет выявить универсальные закономерности в реакции городов на вызов холеры <sup>[14]</sup>.</p>
+                
+                <h3>Общие черты:</h3>
+                <ul>
+                    <li><strong>Эпидемии как катализатор:</strong> во всех трёх случаях холера преодолела политический и бюрократический тупик</li>
+                    <li><strong>Технократический ответ:</strong> решающее слово перешло к инженерам и врачам-гигиенистам</li>
+                    <li><strong>Системное переустройство:</strong> отказ от точечных мер в пользу взаимосвязанных сетей</li>
+                </ul>
+                
+                <h3>Три модели преобразований:</h3>
+                <ul>
+                    <li><strong>Лондон:</strong> инфраструктурный прагматизм (инициатива снизу)</li>
+                    <li><strong>Париж:</strong> тотальная градостроительная хирургия (авторитарная воля)</li>
+                    <li><strong>Минск:</strong> эволюционная адаптация (ограниченные ресурсы)</li>
+                </ul>
+            </div>
+
+    <!-- Три города (карточки) -->
+            <div class="cities-section">
+                <!-- Лондон -->
+                <div class="city-card">
+                    <div class="city-header london">
+                        <div class="city-name">🇬🇧 Лондон</div>
+                        <div class="city-year">1848–1875</div>
+                        <div class="city-icon">🏛️</div>
+                    </div>
+                    <div class="city-content">
+                        <div class="city-quote">«Великое зловоние 1858 года стало точкой невозврата»</div>
+                        <ul class="city-features">
+                            <li>Джон Сноу и картографирование холеры</li>
+                            <li>Джозеф Базалджет — система канализации (132 км)</li>
+                            <li>Закон об общественном здравоохранении 1875 г.</li>
+                        </ul>
+                        <div class="city-stat">
+                            <span>🏗️ Инфраструктура</span>
+                            <span>Подземные коллекторы</span>
+                        </div>
+                        <div class="city-stat">
+                            <span>👥 Модель</span>
+                            <span>Гражданское общество</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Париж -->
+                <div class="city-card">
+                    <div class="city-header paris">
+                        <div class="city-name">🇫🇷 Париж</div>
+                        <div class="city-year">1853–1870</div>
+                        <div class="city-icon">🏰</div>
+                    </div>
+                    <div class="city-content">
+                        <div class="city-quote">«Холера и революция — два страха, слитые воедино»</div>
+                        <ul class="city-features">
+                            <li>Барон Осман — тотальная перестройка</li>
+                            <li>Эжен Бельгран — водопровод и канализация</li>
+                            <li>Широкие бульвары как «санитарные артерии»</li>
+                        </ul>
+                        <div class="city-stat">
+                            <span>🏗️ Инфраструктура</span>
+                            <span>600 км канализации к 1878</span>
+                        </div>
+                        <div class="city-stat">
+                            <span>👥 Модель</span>
+                            <span>Имперская диктатура</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Минск -->
+                <div class="city-card">
+                    <div class="city-header minsk">
+                        <div class="city-name">🇧🇾 Минск</div>
+                        <div class="city-year">1870–1900</div>
+                        <div class="city-icon">🌳</div>
+                    </div>
+                    <div class="city-content">
+                        <div class="city-quote">«Губернская модернизация между вызовом и ресурсами»</div>
+                        <ul class="city-features">
+                            <li>Кароль Чапский — городской голова</li>
+                            <li>Первый водопровод (1874) — 16 колонок</li>
+                            <li>Осушение болот и дренаж</li>
+                        </ul>
+                        <div class="city-stat">
+                            <span>🏗️ Инфраструктура</span>
+                            <span>Водопровод + мелиорация</span>
+                        </div>
+                        <div class="city-stat">
+                            <span>👥 Модель</span>
+                            <span>Эволюционная адаптация</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Заключение -->
+            <div class="conclusion-section">
+                <h2>Заключение</h2>
+                <div class="conclusion-text">
+                    <p><strong>Гипотеза подтвердилась:</strong> холера выступила в роли «невидимого архитектора», обнажив несостоятельность старой городской среды и создав уникальное окно возможностей для преодоления политических, бюрократических и финансовых барьеров.</p>
+                    <p>Во всех трех случаях внешний шок в виде пандемий привел к вовлечению экспертов (врачей и инженеров) и запуску системных инфраструктурных проектов, заложивших основы современного урбанизма <sup>[15]</sup>.</p>
+                    <p><strong>Уроки для современности:</strong> не существует единственно правильного пути к «здоровому городу»; медицина и градостроительство неразделимы; серьёзные преобразования часто требуют внешнего шока, но последствия зависят от того, в чьих руках реализация ответа.</p>
+                </div>
+            </div>
+
+            <!-- Источники -->
+            <div class="sources-section" id="sources">
+                <h3>📚 Ключевые источники</h3>
+                <ul class="sources-list">
+                    <li>Сноу, Дж. «О способе передачи холеры» (1855)</li>
+                    <li>Чадвик, Э. «Отчет о санитарном состоянии трудящегося населения» (1842)</li>
+                    <li>Базалджет, Дж.В. «О главной канализации Лондона» (1865)</li>
+                    <li>Осман, Ж.-Э. «Мемуары префекта Сены» (1893)</li>
+                    <li>Джонсон, С. «Карта призраков» (2015)</li>
+                    <li>Шибеко, З.В. «Минск: страницы жизни дореволюционного города» (1990)</li>
+                    <li>Public Health Act 1875 (Закон об общественном здравоохранении)</li>
+                    <li>Пинкни, Д. «Наполеон III и перестройка Парижа» (1958)</li>
+                    <li>Амелина, Е.В. «Город и чума» (2018)</li>
+                    <li>Ярмуш, В.С. «Минск на рубеже эпох» (2015)</li>
+                    <li>Холл, С. «Век чудес» (2021)</li>
+                    <li>Федорова, М.В. «Санитарный быт города» (2019)</li>
+                </ul>
+            </div>
+
+            <!-- Приложение 1 -->
+            <div class="appendix" id="appendix1">
+                <h2>📊 Приложение 1</h2>
+                <h3>«Порочный круг» антисанитарии в городах XIX века</h3>
+                <div class="appendix-image">
+                    <div class="schema">
+                        <div class="schema-item">🏭 Выгребные ямы и нечистоты</div>
+                        <div class="schema-arrow">↓</div>
+                        <div class="schema-item">💧 Просачивание в почву и грунтовые воды</div>
+                        <div class="schema-arrow">↓</div>
+                        <div class="schema-item">🚰 Загрязнение колодцев и рек</div>
+                        <div class="schema-arrow">↓</div>
+                        <div class="schema-item">🦠 Эпидемии холеры</div>
+                        <div class="schema-arrow">↓</div>
+                        <div class="schema-item">😨 Страх и осознание проблемы</div>
+                        <div class="schema-arrow">↓</div>
+                        <div class="schema-item">🏗️ Санитарные реформы и инфраструктура</div>
+                    </div>
+                </div>
+                <p class="appendix-caption">Рис. 1. Цикл антисанитарии и эпидемий в городах XIX века</p>
+            </div>
+
+            <!-- Приложение 2 -->
+            <div class="appendix" id="appendix2">
+                <h2>📊 Приложение 2</h2>
+                <h3>Сравнительная таблица преобразований Лондона, Парижа и Минска</h3>
+                
+                <div class="comparison-table-wrapper">
+                    <table class="research-comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Критерий</th>
+                                <th>Лондон</th>
+                                <th>Париж</th>
+                                <th>Минск</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Политический механизм</strong></td>
+                                <td>Давление гражданского общества + локальный политический кризис. Инициатива «снизу»</td>
+                                <td>Имперский указ и диктатура префекта. Инициатива «сверху»</td>
+                                <td>Ограниченное городское самоуправление. Инициатива местной элиты под контролем губернатора</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ключевой триггер</strong></td>
+                                <td>«Великое зловоние» (1858)</td>
+                                <td>Слияние угроз: холера + революция (1830, 1848, 1849)</td>
+                                <td>Повторяющиеся эпидемии (1848, 1853, 1866-72)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Доминирующий метод</strong></td>
+                                <td>Целевое инженерное решение (канализация Базалджета)</td>
+                                <td>Тотальная градостроительная хирургия (бульвары, сети)</td>
+                                <td>Поэтапная инфраструктурная модернизация (водопровод, осушение)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Финансовая модель</strong></td>
+                                <td>Крупные городские займы</td>
+                                <td>Огромные государственные субсидии</td>
+                                <td>Скудный бюджет + госсубсидии, крайняя экономия</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Отношение к застройке</strong></td>
+                                <td>Минимальное (подземная инфраструктура)</td>
+                                <td>Радикальный снос кварталов</td>
+                                <td>Прагматичное встраивание</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Социальные последствия</strong></td>
+                                <td>Улучшение для всех</td>
+                                <td>Социальная сегрегация</td>
+                                <td>Выравнивание санитарного минимума</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Темп преобразований</strong></td>
+                                <td>Интенсивный (1859-1875)</td>
+                                <td>Революционно-быстрый (1853-1870)</td>
+                                <td>Эволюционно-медленный (1870-1910)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="appendix-caption">Таблица 1. Сравнительный анализ моделей «холерного» урбанизма</p>
+            </div>
+
+            <!-- Футер -->
+            <div class="paper-footer">
+                <p>© 2026 · Исследовательская работа представлена на районном конкурсе · Секция «История»</p>
+                <p style="margin-top: 10px; font-size: 12px; opacity: 0.6;">На основе материалов создана визуальная новелла «Невидимый архитектор»</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="back-to-top" onclick="scrollToTop()" title="Наверх">↑</button>
+
+    <script>
+        function goBack() {
+            window.close(); // Попытка закрыть вкладку
+            // Если не получилось, возвращаемся назад в истории
+            window.history.back();
+            
+            // Альтернатива - если открыто как модальное окно
+            if (window.opener) {
+                window.opener.focus();
+                window.close();
+            }
+        }
+        
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.city-card');
+            cards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s ease forwards ${0.1 + index * 0.1}s`;
+            });
+        });
+
+        // Кнопка "Наверх"
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Показывать кнопку при прокрутке
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.scrollY > 500) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Плавная прокрутка к якорям
+        document.querySelectorAll('.toc-item').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
