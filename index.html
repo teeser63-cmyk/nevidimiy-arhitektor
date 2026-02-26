@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Невидимый архитектор · Визуальная новелла</title>
+    <!-- Фавикон: бактерия холеры (улучшенная версия) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232c3e50'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='%23e74c3c' font-family='Arial'>🦠</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- ЭКРАН ЗАГРУЗКИ -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <h1>НЕВИДИМЫЙ АРХИТЕКТОР</h1>
+                <p class="subtitle">Три города · 1848–1878</p>
+                <div class="loading-bar">
+                    <div class="loading-progress" id="loading-progress"></div>
+                </div>
+                <p class="loading-text" id="loading-text">Загрузка истории...</p>
+            </div>
+        </div>
+
+        <!-- ГЛАВНОЕ МЕНЮ -->
+        <div id="main-menu" class="main-menu" style="display: none;">
+            <div class="menu-background"></div>
+            <div class="menu-content">
+                <h1>НЕВИДИМЫЙ АРХИТЕКТОР</h1>
+                <p class="menu-subtitle">Как холера научила города заботиться о нас</p>
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="startNewGame()">▶ Начать новую игру</button>
+                    <button class="menu-btn" onclick="showLoadModal()">↩️ Загрузить игру</button>
+                    <button class="menu-btn" onclick="showEncyclopedia()">📚 Историческая энциклопедия</button>
+                    <button class="menu-btn" onclick="showSources()">📖 Исследовательская работа</button>
+                    <button class="menu-btn" onclick="showSettings()">⚙️ Настройки</button>
+                </div>
+                <p class="menu-credits">По мотивам исследовательской работы Карины Тарасенко</p>
+            </div>
+        </div>
+
+        <!-- ОСНОВНОЙ ИГРОВОЙ ИНТЕРФЕЙС -->
+        <div id="game-interface" class="game-container" style="display: none;">
+            <!-- Верхняя панель с характеристиками -->
+            <div class="stats-bar">
+                <div class="stat-item" id="stat-city">📍 Лондон · 1853</div>
+                <div class="stat-group">
+                    <div class="stat" id="stat-influence" title="Влияние · доступ к власти">🏛️ <span>0</span></div>
+                    <div class="stat" id="stat-trust" title="Народная поддержка · доверие горожан">👥 <span>0</span></div>
+                    <div class="stat" id="stat-science" title="Научный авторитет · признание">📚 <span>0</span></div>
+                    <div class="stat" id="stat-resources" title="Ресурсы · деньги и возможности">💰 <span>0</span></div>
+                    <div class="stat" id="stat-insight" title="Прозрение · понимание скрытых связей">🔬 <span>0</span></div>
+                </div>
+                <div class="stat-item" id="stat-health">❤️ Здоровье · <span>100%</span></div>
+            </div>
+
+            <!-- Основная игровая область -->
+            <div class="game-main">
+                <!-- Левая часть: визуальная новелла -->
+                <div class="visual-novel-area">
+                    <!-- Фон и персонажи -->
+                    <div class="scene-container">
+                        <img src="images/backgrounds/default.jpg" alt="Фон" id="background" class="background">
+                        <div class="characters-layer" id="characters-layer"></div>
+                        
+                        <!-- Эффекты (для вспышек, тумана и т.д.) -->
+                        <div class="effect-layer" id="effect-layer"></div>
+                        
+                        <!-- Исследовательская заметка (всплывающая) -->
+                        <div class="research-popup" id="research-popup" style="display: none;">
+                            <div class="research-popup-content">
+                                <span class="research-icon">📜</span>
+                                <div id="research-popup-text"></div>
+                                <button onclick="hideResearchPopup()">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Нижняя панель с текстом и выборами -->
+                    <div class="text-panel">
+                        <div class="speaker-name" id="speaker-name"></div>
+                        <div class="scene-text" id="scene-text">
+                            <!-- Текст текущей сцены -->
+                        </div>
+                        
+                        <div class="choices-container" id="choices-container">
+                            <!-- Кнопки выбора будут добавляться скриптом -->
+                        </div>
+                        
+                        <div class="interface-buttons">
+                            <button class="interface-btn" onclick="showHistory()">📜 История</button>
+                            <button class="interface-btn" onclick="showResearchNote()">🔍 Исследование</button>
+                            <button class="interface-btn" onclick="saveGame()">💾 Сохранить</button>
+                            <button class="interface-btn" onclick="loadGame()">↩️ Загрузить</button>
+                            <button class="interface-btn" onclick="openMenu()">☰ Меню</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая панель: инвентарь и заметки (можно скрывать) -->
+                <div class="sidebar" id="sidebar">
+                    <div class="sidebar-tab active" onclick="showSidebarTab('inventory')">📦 Инвентарь</div>
+                    <div class="sidebar-tab" onclick="showSidebarTab('research')">📚 Энциклопедия</div>
+                    
+                    <div id="inventory-tab" class="sidebar-content active">
+                        <h3>Особые предметы</h3>
+                        <div id="inventory-items">
+                            <!-- Предметы из инвентаря -->
+                        </div>
+                        <h3 style="margin-top: 20px;">Дневник Алексея</h3>
+                        <div id="diary-notes" class="diary-notes">
+                            <!-- Заметки по ходу игры -->
+                        </div>
+                    </div>
+                    
+                    <div id="research-tab" class="sidebar-content">
+                        <h3>Историческая справка</h3>
+                        <div class="research-articles">
+                            <div class="research-article" onclick="showResearchArticle('cholera')">🦠 Холера в XIX веке</div>
+                            <div class="research-article" onclick="showResearchArticle('snow')">👨‍⚕️ Джон Сноу</div>
+                            <div class="research-article" onclick="showResearchArticle('chadwick')">📊 Эдвин Чадуик</div>
+                            <div class="research-article" onclick="showResearchArticle('haussman')">🏛️ Барон Осман</div>
+                            <div class="research-article" onclick="showResearchArticle('czapski')">🌳 Кароль Чапский</div>
+                            <div class="research-article" onclick="showResearchArticle('greatstink')">💨 Великое зловоние</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО ИСТОРИИ -->
+        <div id="history-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📜 История событий</h2>
+                    <span class="close" onclick="hideHistory()">&times;</span>
+                </div>
+                <div class="modal-body" id="history-text"></div>
+            </div>
+        </div>
+
+      <!-- МОДАЛЬНОЕ ОКНО ЭНЦИКЛОПЕДИИ -->
+<div id="encyclopedia-modal" class="modal" style="display: none;">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h2>📚 Историческая энциклопедия</h2>
+            <span class="close" onclick="hideEncyclopedia()">&times;</span>
+        </div>
+        <div class="modal-body" id="encyclopedia-content">
+            <div class="encyclopedia-container">
+                <!-- Навигация по разделам -->
+                <div class="encyclopedia-nav">
+                    <button class="encyclopedia-nav-btn active" onclick="showEncyclopediaSection('people')">👥 Личности</button>
+                    <button class="encyclopedia-nav-btn" onclick="showEncyclopediaSection('events')">📅 События</button>
+                    <button class="encyclopedia-nav-btn" onclick="showEncyclopediaSection('places')">🏙️ Города</button>
+                    <button class="encyclopedia-nav-btn" onclick="showEncyclopediaSection('science')">🔬 Наука и медицина</button>
+                </div>
+                
+                <!-- Секция "Личности" -->
+                <div id="encyclopedia-people" class="encyclopedia-section active">
+                    <h3>👥 Ключевые личности</h3>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">👨‍⚕️ Джон Сноу (1813-1858)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Английский врач, основоположник эпидемиологии</strong></p>
+                            <p>Был личным анестезиологом королевы Виктории (принимал роды у 8 её детей!). Во время эпидемии холеры в Лондоне 1854 года провёл знаменитое расследование: нанёс случаи смерти на карту и обнаружил кластеризацию вокруг насоса на Брод-стрит. Убедил власти снять рукоятку, после чего эпидемия пошла на спад. Его теория водного пути передачи холеры была революционной и встретила сопротивление научного сообщества, признавшего её правоту лишь после смерти Сноу.</p>
+                            <p><em>Основной труд: «О способе передачи холеры» (1855)</em></p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">📊 Эдвин Чадуик (1800-1890)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Английский юрист и социальный реформатор</strong></p>
+                            <p>Автор знаменитого «Отчёта о санитарном состоянии трудящегося населения Великобритании» (1842). Доказал на статистике, что болезни и преждевременная смерть среди рабочих обходятся государству дороже, чем профилактические меры. Был сторонником миазматической теории, считая, что болезни возникают из-за «дурного воздуха». Его деятельность привела к созданию первых санитарных комиссий и законов об общественном здоровье.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🏛️ Барон Жорж-Эжен Осман (1809-1891)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Французский государственный деятель, префект департамента Сена (1853-1870)</strong></p>
+                            <p>По поручению Наполеона III провёл грандиозную перестройку Парижа. Широкие бульвары, парки, единая система водоснабжения и канализации (совместно с инженером Бельграном) — всё это создало современный облик Парижа. Однако оборотной стороной стала социальная сегрегация: рабочие были вытеснены на окраины, а центр стал пространством для буржуазии. Санитарная риторика служила оправданием для политического и эстетического проекта.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🌳 Кароль Чапский (1860-1904)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Минский городской голова (1885-1901)</strong></p>
+                            <p>Аристократ, европеец, мечтатель. При нём Минск начал превращаться в современный город: построен водопровод (1874, ещё до его официального правления, но при его активном участии), осушены болота, замощены улицы, проведено электричество, открыта первая телефонная станция. Чапский лично вкладывал средства в городские проекты. Его деятельность — пример того, как один человек может изменить город даже в условиях ограниченных ресурсов.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🔧 Джозеф Базалджет (1819-1891)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Главный инженер Столичной комиссии по строительству канализации Лондона</strong></p>
+                            <p>Создатель системы лондонской канализации (132 км главных коллекторов), которая функционирует до сих пор. Его гениальное решение — строительство коллекторов с запасом мощности и вынос стоков далеко за пределы города. Благодаря его проекту Лондон навсегда забыл о «Великом зловонии» и эпидемиях холеры.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">💧 Эжен Бельгран (1810-1878)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Французский инженер, создатель системы водоснабжения и канализации Парижа</strong></p>
+                            <p>Под руководством Османа спроектировал и построил сеть парижской канализации (600 км к 1878 году) и новые акведуки, удвоившие подачу воды в город. Его система стала образцом для подражания по всей Европе.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Секция "События" -->
+                <div id="encyclopedia-events" class="encyclopedia-section">
+                    <h3>📅 Ключевые события</h3>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">💨 Великое зловоние 1858 года (Лондон)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Лето 1858 года, Лондон</strong></p>
+                            <p>Аномальная жара и засуха привели к тому, что Темза, куда столетиями сливали нечистоты, превратилась в открытый коллектор. Запах был настолько сильным, что сорвал заседания Парламента (окна здания выходили на реку). Газета The Times писала: «Миазмы, поднимающиеся от реки, настолько губительны, что те, кто вынужден вдыхать их, едва способны переносить жизнь». За 18 дней был принят закон, давший старт строительству канализации Джозефа Базалджета.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🦠 Эпидемия холеры в Сохо 1854 года</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Август-сентябрь 1854 года, Лондон</strong></p>
+                            <p>Вспышка холеры в районе Сохо унесла жизни более 600 человек за несколько недель. Джон Сноу провёл своё знаменитое расследование, нанёс случаи смерти на карту и выявил, что все дороги ведут к водозаборной колонке на Брод-стрит. 8 сентября по его настоянию сняли рукоятку насоса — эпидемия пошла на спад. Это событие считается рождением эпидемиологии как науки.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🏗️ Перестройка Парижа (1853-1870)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Эпоха Османа</strong></p>
+                            <p>Грандиозная реконструкция Парижа под руководством барона Османа по заказу Наполеона III. Было снесено около 20 000 старых зданий, проложено 95 км новых широких бульваров, созданы парки (Булонский лес, Венсенский лес), построены 600 км канализации и новый водопровод. Город приобрёл современный облик, но ценой вытеснения бедноты на окраины.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🚰 Открытие Минского водопровода (1874)</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Минск, 1874 год</strong></p>
+                            <p>Первый в истории Минска централизованный водопровод. Вода забиралась из реки Свислочь выше по течению, фильтровалась через песок и подавалась к 16 водоразборным колонкам. Это было скромное по европейским меркам, но революционное для губернского города решение, резко снизившее заболеваемость кишечными инфекциями.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">📜 Закон об общественном здравоохранении 1875 года</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Великобритания, 1875 год</strong></p>
+                            <p>Исторический закон, который впервые в мире создал систему общественного здравоохранения на национальном уровне. Вводились санитарные округа, обязательные должности санитарных инспекторов, единые строительные нормы. Закон стал юридическим воплощением «санитарной идеи» и образцом для подражания в других странах.</p>
+                        </div>
+                    </div>
+                </div>
+                
+               <!-- Секция "Города" -->
+<div id="encyclopedia-places" class="encyclopedia-section">
+    <h3>🏙️ Три города: сравнительный анализ</h3>
+    
+    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+        <div class="encyclopedia-card-header">
+            <span class="card-title">🇬🇧 Лондон (Великобритания)</span>
+            <span class="card-toggle">▼</span>
+        </div>
+        <div class="encyclopedia-card-content">
+            <p><strong>Период преобразований:</strong> 1848-1875 гг.</p>
+            <p><strong>Население:</strong> 2.5 млн (1850) → 6.5 млн (1900)</p>
+            <p><strong>Ключевые проблемы:</strong> Отсутствие канализации, загрязнение Темзы, перенаселённые трущобы, "Великое зловоние" 1858 года.</p>
+            <p><strong>Ключевые решения:</strong></p>
+            <ul>
+                <li>Система канализации Джозефа Базалджета (132 км главных коллекторов)</li>
+                <li>Набережные Темзы (Виктория-Эмбанкмент, Челси-Эмбанкмент)</li>
+                <li>Закон об общественном здравоохранении 1875 года</li>
+                <li>Должности санитарных инспекторов</li>
+            </ul>
+            <p><strong>Движущая сила:</strong> Гражданское общество + давление прессы + работа учёных (Сноу, Чадуик). Инициатива "снизу".</p>
+            <p><strong>"Холерное наследие":</strong> Подземный Лондон стал образцом для всего мира. Модель инфраструктурного прагматизма.</p>
+        </div>
+    </div>
+    
+    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+        <div class="encyclopedia-card-header">
+            <span class="card-title">🇫🇷 Париж (Франция)</span>
+            <span class="card-toggle">▼</span>
+        </div>
+        <div class="encyclopedia-card-content">
+            <p><strong>Период преобразований:</strong> 1853-1870 гг. (эпоха Османа)</p>
+            <p><strong>Население:</strong> 1 млн (1850) → 2.5 млн (1900)</p>
+            <p><strong>Ключевые проблемы:</strong> Лабиринт узких средневековых улиц, антисанитария, эпидемии холеры 1832 и 1849 гг., баррикады во время революций.</p>
+            <p><strong>Ключевые решения:</strong></p>
+            <ul>
+                <li>95 км новых широких бульваров (проспектов)</li>
+                <li>600 км канализации под руководством Эжена Бельграна</li>
+                <li>Новые акведуки, удвоившие подачу воды</li>
+                <li>Парки: Булонский лес, Венсенский лес</li>
+            </ul>
+            <p><strong>Движущая сила:</strong> Имперская воля Наполеона III и диктаторские полномочия барона Османа. Инициатива "сверху".</p>
+            <p><strong>"Холерное наследие":</strong> Модель тотальной градостроительной хирургии, но ценой социальной сегрегации (вытеснение бедноты на окраины).</p>
+        </div>
+    </div>
+    
+    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+        <div class="encyclopedia-card-header">
+            <span class="card-title">🇧🇾 Минск (Российская империя)</span>
+            <span class="card-toggle">▼</span>
+        </div>
+        <div class="encyclopedia-card-content">
+            <p><strong>Период преобразований:</strong> 1870-1900 гг.</p>
+            <p><strong>Население:</strong> 30 тыс. (1850) → 90 тыс. (1900)</p>
+            <p><strong>Ключевые проблемы:</strong> Заболоченность территории, высокий уровень грунтовых вод, отсутствие чистой воды, антисанитария, эпидемии холеры 1848, 1853, 1866-72 гг.</p>
+            <p><strong>Ключевые решения:</strong></p>
+            <ul>
+                <li>Первый водопровод (1874) — 16 водоразборных колонок</li>
+                <li>Осушение болот в районе Немиги и Татарских огородов</li>
+                <li>Замощение улиц</li>
+                <li>При Кароле Чапском (1885-1901): электричество, телефон, элементы канализации</li>
+            </ul>
+            <p><strong>Движущая сила:</strong> Ограниченное городское самоуправление, инициатива местной элиты (Чапский), под контролем губернатора.</p>
+            <p><strong>"Холерное наследие":</strong> Модель поэтапной, прагматичной модернизации в условиях ограниченных ресурсов.</p>
+        </div>
+    </div>
+</div>
+                
+                <!-- Секция "Наука и медицина" -->
+                <div id="encyclopedia-science" class="encyclopedia-section">
+                    <h3>🔬 Научные открытия и теории</h3>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">💨 Миазматическая теория</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Господствующая теория в первой половине XIX века</strong></p>
+                            <p>Считалось, что болезни (включая холеру) возникают из-за «дурного воздуха» (миазмов), образующегося при разложении органических веществ. Несмотря на ошибочность, теория стимулировала санитарные реформы: очистку улиц, осушение болот, уборку мусора. Эдвин Чадуик был убеждённым сторонником этой теории.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🧫 Контагионистская теория</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Теория о передаче болезни через контакт</strong></p>
+                            <p>Сторонники считали, что болезнь вызывается специфическим «контагием» (заразным началом), передающимся от человека к человеку. Эта теория оправдывала карантины, кордоны, изоляцию больных — меры, часто бесполезные против холеры, распространявшейся через воду.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🗺️ Эпидемиологическое картографирование</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Метод, изобретённый Джоном Сноу</strong></p>
+                            <p>Нанесение каждого случая смерти на карту для выявления пространственных закономерностей. Сноу впервые применил этот метод во время эпидемии 1854 года в Сохо и доказал, что источник заразы — колонка на Брод-стрит. Метод стал основой современной эпидемиологии и геоинформационных систем в здравоохранении.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">🦠 Открытие холерного вибриона</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Роберт Кох, 1883 год</strong></p>
+                            <p>Немецкий микробиолог Роберт Кох во время экспедиции в Египет и Индию выделил и описал возбудителя холеры — холерный вибрион (Vibrio cholerae). Это открытие окончательно подтвердило правоту Сноу и положило конец спорам о причинах болезни, открыв эру бактериологии.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+                        <div class="encyclopedia-card-header">
+                            <span class="card-title">📊 Санитарная статистика</span>
+                            <span class="card-toggle">▼</span>
+                        </div>
+                        <div class="encyclopedia-card-content">
+                            <p><strong>Заслуга Эдвина Чадуика и Уильяма Фарра</strong></p>
+                            <p>Систематический сбор и анализ данных о смертности, заболеваемости и условиях жизни. Чадуик в своём отчёте 1842 года впервые доказал на цифрах, что инвестиции в санитарию экономически выгодны. Это стало основой для принятия санитарных законов.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="encyclopedia-card" onclick="toggleEncyclopediaCard(this)">
+    <div class="encyclopedia-card-header">
+        <span class="card-title">📊 Сравнительная таблица преобразований</span>
+        <span class="card-toggle">▼</span>
+    </div>
+    <div class="encyclopedia-card-content">
+        <table class="comparison-table">
+            <tr>
+                <th>Критерий</th>
+                <th>Лондон</th>
+                <th>Париж</th>
+                <th>Минск</th>
+            </tr>
+            <tr>
+                <td><strong>Инициатор</strong></td>
+                <td>Гражданское общество + инженеры</td>
+                <td>Императорская власть (сверху)</td>
+                <td>Городская дума + голова</td>
+            </tr>
+            <tr>
+                <td><strong>Главный триггер</strong></td>
+                <td>"Великое зловоние" 1858 г.</td>
+                <td>Холера + страх революции</td>
+                <td>Повторяющиеся эпидемии</td>
+            </tr>
+            <tr>
+                <td><strong>Метод</strong></td>
+                <td>Целевое инженерное решение</td>
+                <td>Тотальная перепланировка</td>
+                <td>Поэтапная модернизация</td>
+            </tr>
+            <tr>
+                <td><strong>Инфраструктура</strong></td>
+                <td>132 км канализации</td>
+                <td>600 км канализации</td>
+                <td>Водопровод, дренаж</td>
+            </tr>
+            <tr>
+                <td><strong>Темп</strong></td>
+                <td>Интенсивный (1859-1875)</td>
+                <td>Революционно-быстрый (1853-1870)</td>
+                <td>Эволюционно-медленный (1870-1900)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+        <!-- МОДАЛЬНОЕ ОКНО С ИССЛЕДОВАТЕЛЬСКОЙ РАБОТОЙ -->
+        <div id="sources-modal" class="modal" style="display: none;">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h2>📖 Исследовательская работа</h2>
+                    <span class="close" onclick="hideSources()">&times;</span>
+                </div>
+                <div class="modal-body" id="sources-content">
+                    <h3>«Невидимый архитектор: как холера перестроила Лондон, Париж и Минск»</h3>
+                    <p class="sources-author">Тарасенко Карина Витальевна, учащаяся 9 класса</p>
+                    
+                    <div class="sources-section">
+                        <h4>Введение</h4>
+                        <p>На протяжении столетий эпидемии были главными врагами человечества, однако именно в XIX веке одна из них, холера, стала катализатором глобальных перемен в устройстве городской среды...</p>
+                        <button onclick="showFullResearch()" class="sources-btn">Читать полностью</button>
+                    </div>
+                    
+                    <div class="sources-section">
+                        <h4>Список использованных источников</h4>
+                        <ul class="sources-list" id="sources-list">
+                            <!-- Загружается из script.js -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК -->
+        <div id="settings-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚙️ Настройки</h2>
+                    <span class="close" onclick="hideSettings()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-group">
+                        <h4>Музыка</h4>
+                        <label>
+                            <input type="checkbox" id="music-toggle" checked> Включить музыку
+                        </label>
+                        <input type="range" id="music-volume" min="0" max="100" value="50">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h4>Звуки</h4>
+                        <label>
+                            <input type="checkbox" id="sound-toggle" checked> Включить звуки
+                        </label>
+                        <input type="range" id="sound-volume" min="0" max="100" value="70">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h4>Текст</h4>
+                        <label>
+                            <input type="checkbox" id="auto-text" checked> Автоматическая прокрутка
+                        </label>
+                        <select id="text-speed">
+                            <option value="30">Медленно</option>
+                            <option value="20" selected>Средне</option>
+                            <option value="10">Быстро</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="saveSettings()" class="settings-save">Сохранить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО КОНЦОВКИ -->
+        <div id="ending-modal" class="modal ending-modal" style="display: none;">
+            <div class="modal-content ending-content">
+                <h2 id="ending-title"></h2>
+                <div id="ending-text" class="ending-text"></div>
+                <div id="ending-image" class="ending-image"></div>
+                <div class="ending-stats">
+                    <h3>Итоги пути</h3>
+                    <div id="ending-stats-list"></div>
+                </div>
+                <div class="ending-buttons">
+                    <button onclick="restartGame()">🔄 Начать заново</button>
+                    <button onclick="showCredits()">🎬 Авторы</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- АУДИО ЭЛЕМЕНТЫ (опционально) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="audio/main-theme.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="sound-click" preload="auto">
+        <source src="audio/click.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="sound-cholera" preload="auto">
+        <source src="audio/cholera.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
